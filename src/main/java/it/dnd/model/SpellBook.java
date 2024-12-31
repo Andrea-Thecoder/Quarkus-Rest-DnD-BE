@@ -33,10 +33,8 @@ public class SpellBook extends  AbstractAuditable {
     @Column(nullable = false)
     private int level;
 
-    private int resourceCost;
+    private Integer resourceCost;
 
-    @OneToMany(mappedBy = "spellBook")
-    private List<PersonaggioSpellBook> personaggi;
 
 
 

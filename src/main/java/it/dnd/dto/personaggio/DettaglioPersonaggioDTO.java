@@ -2,6 +2,8 @@ package it.dnd.dto.personaggio;
 
 
 import it.dnd.dto.equipaggiamento.DettaglioEquipaggiamentoDTO;
+import it.dnd.dto.spell.DettaglioSpellResponseDTO;
+import it.dnd.dto.spell.SpellPersonaggioDTO;
 import it.dnd.model.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,6 +28,7 @@ public class DettaglioPersonaggioDTO {
     private Double gold;
     private Set<TipoClasse> classi;
     private List<DettaglioEquipaggiamentoDTO> equipaggiamento;
+    private List<SpellPersonaggioDTO> spellbook;
 
 
     public static DettaglioPersonaggioDTO of(Personaggio personaggio) {
@@ -36,6 +39,7 @@ public class DettaglioPersonaggioDTO {
         dto.setGold(personaggio.getGold());
         dto.setClassi(ExtractTipoClasse(personaggio.getClassi()));
         dto.setEquipaggiamento(ExtractEquip(personaggio.getEquipaggiamento()));
+        dto.setSpellbook(ExtractSpell(personaggio.getSpellBook()));
         return dto;
     }
 
@@ -46,6 +50,11 @@ public class DettaglioPersonaggioDTO {
     private static List<DettaglioEquipaggiamentoDTO> ExtractEquip (List<PersonaggioEquipaggiamento> pe){
         return pe.stream()
                 .map(peq -> DettaglioEquipaggiamentoDTO.of((peq.getEquipaggiamento())))
+                .toList();
+    }
+    private static List<SpellPersonaggioDTO> ExtractSpell (List<PersonaggioSpellBook> ps){
+        return ps.stream()
+                .map(pes -> SpellPersonaggioDTO.of(pes.getSpellBook()))
                 .toList();
     }
 }

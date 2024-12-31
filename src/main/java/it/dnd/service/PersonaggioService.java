@@ -9,10 +9,6 @@ import it.dnd.dto.PagedResultDTO;
 import it.dnd.dto.personaggio.DettaglioPersonaggioDTO;
 import it.dnd.dto.personaggio.InsertPersonaggioDTO;
 import it.dnd.dto.search.BaseSearch;
-import it.dnd.dto.spell.BasicSpellDTO;
-import it.dnd.dto.spell.DettaglioSpellDTO;
-import it.dnd.dto.spell.DettaglioSpellResponseDTO;
-import it.dnd.dto.spell.SpellResponseDTO;
 import it.dnd.exception.ServiceException;
 import it.dnd.model.*;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -38,8 +34,6 @@ public class PersonaggioService {
     @RestClient
     DndApiClient dndApiClient;
 
-  /*  @RestClient
-    TestClient testClient;*/
 
     public DettaglioPersonaggioDTO createPersonaggio (InsertPersonaggioDTO dto) {
         try(Transaction tx = db.beginTransaction()) {
@@ -70,24 +64,4 @@ public class PersonaggioService {
         PagedList<Personaggio> personaggi = request.paginationOrderAndSort(query).findPagedList();
         return PagedResultDTO.of(personaggi,DettaglioPersonaggioDTO::of);
     }
-
-    /*public String truffa(){
-        //SpellResponseDTO spells = dndApiClient.getSpells();
-        Long random = new Random().nextLong(10)+1;
-        return dndApiClient.getString(random);
-    }*/
-/*
-    public SpellResponseDTO<BasicSpellDTO> truffa(){
-        String response = dndApiClient.getSpells().toString();
-        System.out.println("Response: " + response);
-        return dndApiClient.getSpells();
-    }*/
-
-    public DettaglioSpellDTO getSpellById(String id){
-        return DettaglioSpellDTO.of(dndApiClient.getSpellsByName(id));
-    }
-
-   /* public String truffadue(){
-        return testClient.getUsers();
-    }*/
 }

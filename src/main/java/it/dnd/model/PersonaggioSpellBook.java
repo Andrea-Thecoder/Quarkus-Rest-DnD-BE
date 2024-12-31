@@ -17,7 +17,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "a_personaggio_spell_book")
 @Index(columnNames = {"personaggio_id", "spell_book_id"},unique = true)
-public class PersonaggioSpellBook {
+public class PersonaggioSpellBook extends AbstractAuditable{
 
     @Id
     @GeneratedValue
