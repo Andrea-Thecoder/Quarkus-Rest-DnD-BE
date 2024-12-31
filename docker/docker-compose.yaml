@@ -1,0 +1,14 @@
+services:
+  my_events_db:
+    image: postgres:16.2
+    container_name: dnd-rest
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=dnd_rest_user
+      - POSTGRES_PASSWORD=dndrest!!!  
+      - POSTGRES_DB=dnd_rest_db
+      
+    volumes:
+      - ./docker:/docker-entrypoint-initdb.d
+      - ./data:/var/lib/postgresql/data 
