@@ -38,9 +38,8 @@ public class PersonaggioService {
     public DettaglioPersonaggioDTO createPersonaggio (InsertPersonaggioDTO dto) {
         try(Transaction tx = db.beginTransaction()) {
             Personaggio newPg =  dto.toEntity();
-            newPg.setRace(db.reference(TipoRazza.class,dto.getIdRace()));
             newPg.insert(tx);
-            Set<PersonaggioClasse> classList = personaggioClasseService.createPersonaggioClasseNoTransaction(newPg.getId(), dto.getIdClassi(),tx);
+            Set<PersonaggioClasse> classList = personaggioClasseService.createPersonaggioClasseNoTransaction(newPg.getId(), dto.getClassi(),tx);
             newPg.setClassi(classList);
             if(CollectionUtils.isNotEmpty(dto.getEquipaggiamentoList())){
 
@@ -51,7 +50,6 @@ public class PersonaggioService {
                 newPg.setEquipaggiamento(null);
             }
             tx.commit();
-            System.out.println("ciao"+newPg.getClassi().size());
             return DettaglioPersonaggioDTO.of(newPg);
 
         } catch (Exception e){

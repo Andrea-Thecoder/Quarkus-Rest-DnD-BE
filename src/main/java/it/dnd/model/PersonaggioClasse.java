@@ -31,4 +31,7 @@ public class PersonaggioClasse extends  AbstractAuditable {
     @JoinColumn(name ="tipo_classe_id", nullable = false)
     @DbForeignKey(onDelete = ConstraintMode.CASCADE)
     private TipoClasse tipoClasse;
+
+    @Column(nullable = false)
+    private int level;
 }

@@ -14,14 +14,10 @@ import lombok.Setter;
 
 public class SpellPersonaggioDTO extends  BasicSpellDTO {
 
-    private Long id;
     private Integer resourceCost;
 
     public static SpellPersonaggioDTO of(SpellBook spellbook) {
-        // Creiamo una nuova istanza del DTO
         SpellPersonaggioDTO dto = new SpellPersonaggioDTO();
-
-        dto.setId(spellbook.getId());
         if(spellbook.getResourceCost() != null)
             dto.setResourceCost(spellbook.getResourceCost());
 

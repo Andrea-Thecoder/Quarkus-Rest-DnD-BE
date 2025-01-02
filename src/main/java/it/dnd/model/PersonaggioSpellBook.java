@@ -16,7 +16,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Entity
 @Table(name = "a_personaggio_spell_book")
-@Index(columnNames = {"personaggio_id", "spell_book_id"},unique = true)
+@Index(columnNames = {"personaggio_id", "spell_book_name"},unique = true)
 public class PersonaggioSpellBook extends AbstractAuditable{
 
     @Id
@@ -29,7 +29,7 @@ public class PersonaggioSpellBook extends AbstractAuditable{
     private Personaggio personaggio;
 
     @ManyToOne
-    @JoinColumn(name ="spell_book_id", nullable = false)
+    @JoinColumn(name ="spell_book_name", nullable = false)
     @DbForeignKey(onDelete = io.ebean.annotation.ConstraintMode.CASCADE)
     private SpellBook spellBook;
 }

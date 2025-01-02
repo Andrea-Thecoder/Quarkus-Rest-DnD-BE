@@ -30,8 +30,7 @@ public class Personaggio extends  AbstractAuditable{
     @JoinColumn(nullable = false)
     private TipoRazza race;
 
-    @Column(nullable = false)
-    private int level;
+    private Integer experience;
 
     private Double gold;
 

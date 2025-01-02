@@ -1,6 +1,7 @@
 package it.dnd.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.ebean.Model;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -14,6 +15,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "tipo_equipaggiamento")
+@JsonIgnoreProperties(ignoreUnknown = true)
 
 public class TipoEquipaggiamento extends Model {
 

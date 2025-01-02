@@ -1,8 +1,8 @@
 package it.dnd.dto.personaggio;
 
 
+import it.dnd.dto.persionaggioClasse.PersonaggioClasseDTO;
 import it.dnd.dto.equipaggiamento.DettaglioEquipaggiamentoDTO;
-import it.dnd.dto.spell.DettaglioSpellResponseDTO;
 import it.dnd.dto.spell.SpellPersonaggioDTO;
 import it.dnd.model.*;
 import lombok.AllArgsConstructor;
@@ -12,6 +12,7 @@ import lombok.Setter;
 
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Setter
@@ -22,20 +23,22 @@ import java.util.stream.Collectors;
 public class DettaglioPersonaggioDTO {
 
 
+    private UUID id;
     private String name;
-    private TipoRazza race;
-    private int level;
+    private String race;
+    private int experience;
     private Double gold;
-    private Set<TipoClasse> classi;
+    private Set<PersonaggioClasseDTO> classi;
     private List<DettaglioEquipaggiamentoDTO> equipaggiamento;
     private List<SpellPersonaggioDTO> spellbook;
 
 
     public static DettaglioPersonaggioDTO of(Personaggio personaggio) {
         DettaglioPersonaggioDTO dto = new DettaglioPersonaggioDTO();
+        dto.setId(personaggio.getId());
         dto.setName(personaggio.getName());
-        dto.setRace(personaggio.getRace());
-        dto.setLevel(personaggio.getLevel());
+        dto.setRace(personaggio.getRace().getDescription());
+        dto.setExperience(personaggio.getExperience());
         dto.setGold(personaggio.getGold());
         dto.setClassi(ExtractTipoClasse(personaggio.getClassi()));
         dto.setEquipaggiamento(ExtractEquip(personaggio.getEquipaggiamento()));
@@ -43,8 +46,8 @@ public class DettaglioPersonaggioDTO {
         return dto;
     }
 
-    private static Set<TipoClasse> ExtractTipoClasse (Set<PersonaggioClasse> pc){
-        return pc.stream().map(PersonaggioClasse::getTipoClasse).collect(Collectors.toSet());
+    private static Set<PersonaggioClasseDTO> ExtractTipoClasse (Set<PersonaggioClasse> pc){
+        return pc.stream().map(PersonaggioClasseDTO::of).collect(Collectors.toSet());
     }
 
     private static List<DettaglioEquipaggiamentoDTO> ExtractEquip (List<PersonaggioEquipaggiamento> pe){

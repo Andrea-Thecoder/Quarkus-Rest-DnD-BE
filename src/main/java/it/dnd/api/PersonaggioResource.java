@@ -38,4 +38,6 @@ public class PersonaggioResource {
         log.info("PersonaggioResource - findPersonaggi");
         return personaggioService.findPersonaggi(request);
     }
+
+
 }

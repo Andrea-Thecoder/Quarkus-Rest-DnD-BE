@@ -1,14 +1,12 @@
 package it.dnd.dto.personaggio;
 
 
+import it.dnd.dto.persionaggioClasse.InsertPersonaggioClasseDTO;
+import it.dnd.dto.persionaggioClasse.PersonaggioClasseDTO;
 import it.dnd.dto.equipaggiamento.InsertEquipaggiamentoDTO;
-import it.dnd.model.Equipaggiamento;
 import it.dnd.model.Personaggio;
 import it.dnd.model.TipoRazza;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,15 +26,13 @@ public class InsertPersonaggioDTO {
     private String name;
 
     @NotNull(message = "La razza non può essere vuoto")
-    //@Min(value = 1)
     private Long idRace;
 
-    @Positive(message = "Il livello deve avere un valore pari o superiore ad 1")
-    @Min(value = 1)
-    private int level;
+    @PositiveOrZero(message = "Il livello deve avere un valore pari o superiore ad 1")
+    private int experience;
 
     @NotNull(message = "La classe deve non può essere vuota")
-    private Set<Long> idClassi;
+    private Set<InsertPersonaggioClasseDTO> classi;
 
     private List<InsertEquipaggiamentoDTO>  equipaggiamentoList;
 
@@ -47,7 +43,8 @@ public class InsertPersonaggioDTO {
     public Personaggio toEntity() {
         Personaggio personaggio = new Personaggio();
         personaggio.setName(this.name);
-        personaggio.setLevel(this.level);
+        personaggio.setRace(personaggio.db().reference(TipoRazza.class,this.idRace));
+        personaggio.setExperience(this.experience);
         personaggio.setGold(this.gold);
         return personaggio;
     }

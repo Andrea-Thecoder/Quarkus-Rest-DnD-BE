@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import io.quarkus.security.ForbiddenException;
 import io.quarkus.security.UnauthorizedException;
 import jakarta.ws.rs.NotFoundException;
+import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.MediaType;
 import org.jboss.resteasy.reactive.RestResponse;
 import org.jboss.resteasy.reactive.RestResponse.ResponseBuilder;
@@ -64,6 +65,14 @@ public class ExceptionMapper {
 
     @ServerExceptionMapper
     public RestResponse<ExceptionResponse> mapException(UnrecognizedPropertyException ex) {
+        return ResponseBuilder
+                .create(Status.BAD_REQUEST, new ExceptionResponse(Status.BAD_REQUEST.getStatusCode(), ex))
+                .type(MediaType.APPLICATION_JSON)
+                .build();
+    }
+
+    @ServerExceptionMapper
+    public RestResponse<ExceptionResponse> mapException (WebApplicationException ex){
         return ResponseBuilder
                 .create(Status.BAD_REQUEST, new ExceptionResponse(Status.BAD_REQUEST.getStatusCode(), ex))
                 .type(MediaType.APPLICATION_JSON)

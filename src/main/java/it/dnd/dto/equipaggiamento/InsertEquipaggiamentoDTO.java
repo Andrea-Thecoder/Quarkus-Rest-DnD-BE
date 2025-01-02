@@ -20,11 +20,11 @@ public class InsertEquipaggiamentoDTO {
     private String name;
 
     @PositiveOrZero(message = "La quantità non può essere un valore negativo")
-    @DefaultValue("1")
     private int quantity;
 
     @NotNull(message = "TipoEquip id deve avere un valore")
-    private TipoEquipaggiamento tipoEquipaggiamento;
+    private Long idTipoEquipaggiamento;
+
     private String damage;
     private Integer caBonus;
     private Double price;
@@ -36,7 +36,7 @@ public class InsertEquipaggiamentoDTO {
         Equipaggiamento equipaggiamento = new Equipaggiamento();
         equipaggiamento.setName(this.name);
         equipaggiamento.setQuantity(this.quantity);
-        equipaggiamento.setTipoEquipaggiamento(this.tipoEquipaggiamento);
+        equipaggiamento.setTipoEquipaggiamento(equipaggiamento.db().reference(TipoEquipaggiamento.class,this.idTipoEquipaggiamento));
         equipaggiamento.setDamage(this.damage);
         equipaggiamento.setCaBonus(this.caBonus);
         equipaggiamento.setPrice(this.price);

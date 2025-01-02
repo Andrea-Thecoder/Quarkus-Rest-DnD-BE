@@ -18,14 +18,11 @@ import java.util.List;
 public class SpellBook extends  AbstractAuditable {
 
     @Id
-    @GeneratedValue
-    private Long id;
+    @Column(nullable = false)
+    private String name;
 
     @Column(nullable = false)
     private String index;
-
-    @Column(nullable = false)
-    private String name;
 
     @Column(nullable = false)
     private String url;

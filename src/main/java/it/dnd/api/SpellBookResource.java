@@ -2,6 +2,7 @@ package it.dnd.api;
 
 
 import it.dnd.dto.PagedResultDTO;
+import it.dnd.dto.SimpleResultDTO;
 import it.dnd.dto.search.BaseSearch;
 import it.dnd.dto.spell.BasicSpellDTO;
 import it.dnd.dto.spell.InsertSpellBookDTO;
@@ -12,6 +13,7 @@ import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
@@ -44,5 +46,24 @@ public class SpellBookResource {
         log.info("SpellbookResource - createSpell");
 
         return  spellBookService.createSpell(dto);
+    }
+
+    @DELETE
+    @Path("/{spellName}")
+        public SimpleResultDTO<Void> deleteSpell(
+            @PathParam("spellName") String  spellName
+            ){
+        spellBookService.deleteSpell(spellName);
+        return SimpleResultDTO.<Void>builder().message("Spell eliminata con successo.").build();
+        }
+
+    @DELETE
+    @Path("/{spellName}/remove-from-player")
+    public SimpleResultDTO<Void> removeSpellFromPersonaggio(
+            @PathParam("spellName") String  spellName,
+            @QueryParam("idPersonaggio") UUID idPg
+    ){
+        spellBookService.removeSpellFromPersonaggio(spellName,idPg);
+        return SimpleResultDTO.<Void>builder().message("Spell rimossa dal personaggio con successo.").build();
     }
 }
