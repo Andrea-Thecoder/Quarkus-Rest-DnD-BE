@@ -10,8 +10,12 @@ import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import lombok.extern.slf4j.Slf4j;
+import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
+
+import java.util.UUID;
 
 @Tag(name = "API Personaggio")
 @Path("Personaggio")
@@ -25,6 +29,10 @@ public class PersonaggioResource {
 
 
     @POST
+    @Operation(
+            summary = "Inserimento di un nuovo personaggio",
+            description = "Permette l'inserimento di un nuovo personaggio nel DB."
+    )
     public DettaglioPersonaggioDTO createPersonaggio (
             @Valid InsertPersonaggioDTO dto
             ){
@@ -33,10 +41,27 @@ public class PersonaggioResource {
     }
 
     @GET
+    @Operation(
+            summary = "Recupera una lista con tutti i personaggi esistenti.",
+            description = "Permette il recupero di tutti i personaggi inseriti nel DB. Restitusice una lista Paginata ed accetta queryparams di ricerca"
+    )
     public PagedResultDTO<DettaglioPersonaggioDTO> findPersonaggi(
             @BeanParam BaseSearch request){
         log.info("PersonaggioResource - findPersonaggi");
         return personaggioService.findPersonaggi(request);
+    }
+
+    @GET
+    @Path("/{id}")
+    @Operation(
+            summary = "Recupera i dati del singolo personaggio ricercandolo per ID.",
+            description = "Permette il recupero del singolo personaggio in base al suo ID."
+    )
+    public DettaglioPersonaggioDTO getPersonaggioById(
+            @PathParam("id")UUID id
+            ){
+        log.info("PersonaggioResource - getPersonaggioById");
+        return personaggioService.getPersonaggioById(id);
     }
 
 

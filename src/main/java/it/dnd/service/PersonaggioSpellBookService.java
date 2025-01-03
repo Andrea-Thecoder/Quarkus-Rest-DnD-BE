@@ -36,6 +36,17 @@ public class PersonaggioSpellBookService {
                         new NotFoundException("Il personaggio non possiede la Spell ricercata."));
     }
 
+    public List<SpellBook> getSpellBooksByIdPersonaggio(UUID id){
+        return db.find(PersonaggioSpellBook.class)
+                .select("spellBook")
+                .where()
+                .eq("personaggio.id",id)
+                .findList()
+                .stream()
+                .map(PersonaggioSpellBook::getSpellBook)
+                .toList();
+    }
+
     public  long countSpellByName (String spellName){
        return db.find(PersonaggioSpellBook.class)
                .select("spellBook.name")

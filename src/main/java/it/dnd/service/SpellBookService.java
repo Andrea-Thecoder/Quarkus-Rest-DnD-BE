@@ -3,7 +3,7 @@ package it.dnd.service;
 
 import io.ebean.Database;
 import io.ebean.Transaction;
-import it.dnd.client.DndApiClient;
+import it.dnd.client.DndRestSpell;
 import it.dnd.dto.spell.*;
 import it.dnd.exception.ServiceException;
 import it.dnd.model.PersonaggioSpellBook;
@@ -13,8 +13,8 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.NotFoundException;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
-import org.jboss.resteasy.reactive.RestResponse;
 
+import java.util.List;
 import java.util.UUID;
 
 @ApplicationScoped
@@ -27,14 +27,23 @@ public class SpellBookService {
     PersonaggioSpellBookService personaggioSpellBookService;
 
     @RestClient
-    DndApiClient dndApiClient;
+    DndRestSpell dndRestSpell;
 
-    public RestResponse<SpellResponseDTO<BasicSpellDTO>> findSpells(){
-        return dndApiClient.getSpells();
+    public SpellResponseDTO<BasicSpellDTO> findSpells(){
+        return dndRestSpell.getSpells();
+    }
+
+    public DettaglioSpellResponseDTO getSpellDettaglioByName (String spellName){
+        return dndRestSpell.getSpellsByName(FormatString.dashString(spellName));
+    }
+
+    public List<SpellPersonaggioDTO> getSpellbooksByPersonaggioId(UUID id){
+        List<SpellBook> sp = personaggioSpellBookService.getSpellBooksByIdPersonaggio(id);
+        return sp.stream().map(SpellPersonaggioDTO::of).toList();
     }
 
     public SpellPersonaggioDTO createSpell(InsertSpellBookDTO dto){
-        DettaglioSpellResponseDTO spell = dndApiClient.getSpellsByName(FormatString.dashString(dto.getSpellName()));
+        DettaglioSpellResponseDTO spell = dndRestSpell.getSpellsByName(FormatString.dashString(dto.getSpellName()));
         try(Transaction tx = db.beginTransaction()){
             SpellBook newSpell = db.find(SpellBook.class).where().ilike("name", dto.getSpellName()).findOne();
             if(newSpell == null){
@@ -54,10 +63,6 @@ public class SpellBookService {
         }
         }
 
-    public DettaglioSpellResponseDTO getRestSpellByName(String name){
-        return dndApiClient.getSpellsByName(FormatString.dashString(name));
-    }
-
     public void deleteSpell (String name){
         SpellBook spell = getSpellByName(name);
         try (Transaction tx = db.beginTransaction()) {
@@ -73,7 +78,6 @@ public class SpellBookService {
 
     public void removeSpellFromPersonaggio(String spellName, UUID idPg){
        PersonaggioSpellBook psb =  personaggioSpellBookService.getPersonaggioSpellBookByIdAndName(spellName,idPg);
-       System.out.println(psb);
         try (Transaction tx = db.beginTransaction()){
             psb.delete(tx);
             if(personaggioSpellBookService.countSpellByName(spellName) == 0){
@@ -87,6 +91,7 @@ public class SpellBookService {
         }
     }
 
+
     public SpellBook getSpellByName(String name){
         return db.find(SpellBook.class).where()
                 .ilike("name",name)
@@ -95,15 +100,4 @@ public class SpellBookService {
                 );
     }
 
-
-   /* public SpellBook createSpellNoTansiction (InsertSpellBookDTO dto, Transaction tx){
-        SpellBook newSpell = new SpellBook();
-        newSpell.setIndex(dto.getIndex());
-        newSpell.setName(spell.getName());
-        newSpell.setLevel(spell.getLevel());
-        newSpell.setUrl(spell.getUrl());
-        newSpell.setResourceCost(dto.getResourceCost() );
-        newSpell.insert(tx);
-        personaggioSpellBookService.createPersonaggioSpellbookNoTransaction(dto.getIdPg(),newSpell.getId(),tx);
-    }*/
 }

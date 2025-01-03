@@ -4,13 +4,16 @@ import io.ebean.Database;
 import io.ebean.ExpressionList;
 import io.ebean.PagedList;
 import io.ebean.Transaction;
-import it.dnd.client.DndApiClient;
+import it.dnd.client.DndRestClassi;
 import it.dnd.dto.PagedResultDTO;
 import it.dnd.dto.personaggio.DettaglioPersonaggioDTO;
 import it.dnd.dto.personaggio.InsertPersonaggioDTO;
 import it.dnd.dto.search.BaseSearch;
+import it.dnd.dto.spell.DettaglioSpellTableDTO;
+import it.dnd.dto.spell.SpellTableDTO;
 import it.dnd.exception.ServiceException;
 import it.dnd.model.*;
+import it.dnd.model.enumerator.CharacterClass;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.apache.commons.collections4.CollectionUtils;
@@ -32,7 +35,7 @@ public class PersonaggioService {
    PersonaggioEquipaggiamentoService personaggioEquipaggiamentoService;
 
     @RestClient
-    DndApiClient dndApiClient;
+    DndRestClassi dndRestClassi;
 
 
     public DettaglioPersonaggioDTO createPersonaggio (InsertPersonaggioDTO dto) {
@@ -50,7 +53,7 @@ public class PersonaggioService {
                 newPg.setEquipaggiamento(null);
             }
             tx.commit();
-            return DettaglioPersonaggioDTO.of(newPg);
+            return DettaglioPersonaggioDTO.of(newPg,createSpellTableByClass(newPg.getClassi()));
 
         } catch (Exception e){
             throw new ServiceException(e);
@@ -60,6 +63,36 @@ public class PersonaggioService {
     public PagedResultDTO<DettaglioPersonaggioDTO> findPersonaggi(BaseSearch request){
         ExpressionList<Personaggio> query = db.find(Personaggio.class).where();
         PagedList<Personaggio> personaggi = request.paginationOrderAndSort(query).findPagedList();
-        return PagedResultDTO.of(personaggi,DettaglioPersonaggioDTO::of);
+        return PagedResultDTO.of(personaggi, p -> DettaglioPersonaggioDTO.of(p, createSpellTableByClass(p.getClassi())));
+    }
+
+    public DettaglioPersonaggioDTO getPersonaggioById (UUID id){
+        Personaggio pg = getPersonaggioByidOrThrow(id);
+        return DettaglioPersonaggioDTO.of(pg,createSpellTableByClass(pg.getClassi()));
+
+    }
+
+
+    private Personaggio getPersonaggioByidOrThrow(UUID id){
+        return db.find(Personaggio.class).where()
+                .idEq(id)
+                .findOneOrEmpty()
+                .orElseThrow(() -> new ServiceException("Personaggio avente l'id : "+ id + " non esiste."));
+    }
+
+    private List<DettaglioSpellTableDTO> createSpellTableByClass(
+            Set<PersonaggioClasse> classi
+    ){
+        List<DettaglioSpellTableDTO> spellTableList = new ArrayList<>();
+                            for (PersonaggioClasse pc  : classi){
+                                String classe = CharacterClass.CheckClassName(pc.getTipoClasse().getDescription());
+                                if(classe == null)
+                                    continue;
+                                int level = pc.getLevel();
+                                if(level > 20) level = 20;
+                                SpellTableDTO spellTable = dndRestClassi.getSpellTableClassByLevel(classe,level);
+                                spellTableList.add(DettaglioSpellTableDTO.of(classe,spellTable));
+                            }
+                            return spellTableList;
     }
 }

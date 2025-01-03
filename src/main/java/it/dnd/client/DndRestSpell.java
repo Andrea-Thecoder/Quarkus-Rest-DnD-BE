@@ -6,16 +6,15 @@ import it.dnd.dto.spell.SpellResponseDTO;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
-import org.jboss.resteasy.reactive.RestResponse;
 
 
 @Path("/spells")
 @RegisterRestClient(configKey = "dnd-api")
 
-public interface DndApiClient {
+public interface DndRestSpell {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-   RestResponse<SpellResponseDTO<BasicSpellDTO>> getSpells();
+   SpellResponseDTO<BasicSpellDTO> getSpells();
 
     @GET
     @Path("/{index}")

@@ -15,7 +15,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "tipo_equipaggiamento")
-@JsonIgnoreProperties(ignoreUnknown = true)
 
 public class TipoEquipaggiamento extends Model {
 

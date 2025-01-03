@@ -3,6 +3,7 @@ package it.dnd.dto.personaggio;
 
 import it.dnd.dto.persionaggioClasse.PersonaggioClasseDTO;
 import it.dnd.dto.equipaggiamento.DettaglioEquipaggiamentoDTO;
+import it.dnd.dto.spell.DettaglioSpellTableDTO;
 import it.dnd.dto.spell.SpellPersonaggioDTO;
 import it.dnd.model.*;
 import lombok.AllArgsConstructor;
@@ -28,18 +29,21 @@ public class DettaglioPersonaggioDTO {
     private String race;
     private int experience;
     private Double gold;
+    private List<DettaglioSpellTableDTO> spellTable;
     private Set<PersonaggioClasseDTO> classi;
     private List<DettaglioEquipaggiamentoDTO> equipaggiamento;
     private List<SpellPersonaggioDTO> spellbook;
 
 
-    public static DettaglioPersonaggioDTO of(Personaggio personaggio) {
+
+    public static DettaglioPersonaggioDTO of(Personaggio personaggio,List<DettaglioSpellTableDTO> spellTable) {
         DettaglioPersonaggioDTO dto = new DettaglioPersonaggioDTO();
         dto.setId(personaggio.getId());
         dto.setName(personaggio.getName());
         dto.setRace(personaggio.getRace().getDescription());
         dto.setExperience(personaggio.getExperience());
         dto.setGold(personaggio.getGold());
+        dto.setSpellTable(spellTable);
         dto.setClassi(ExtractTipoClasse(personaggio.getClassi()));
         dto.setEquipaggiamento(ExtractEquip(personaggio.getEquipaggiamento()));
         dto.setSpellbook(ExtractSpell(personaggio.getSpellBook()));
