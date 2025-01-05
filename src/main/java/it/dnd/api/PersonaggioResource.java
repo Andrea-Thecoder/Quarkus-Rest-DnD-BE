@@ -2,6 +2,7 @@ package it.dnd.api;
 
 
 import it.dnd.dto.PagedResultDTO;
+import it.dnd.dto.SimpleResultDTO;
 import it.dnd.dto.personaggio.DettaglioPersonaggioDTO;
 import it.dnd.dto.personaggio.InsertPersonaggioDTO;
 import it.dnd.dto.search.BaseSearch;
@@ -62,6 +63,17 @@ public class PersonaggioResource {
             ){
         log.info("PersonaggioResource - getPersonaggioById");
         return personaggioService.getPersonaggioById(id);
+    }
+
+    @DELETE
+    @Path("/{id}")
+    public SimpleResultDTO<UUID> deletePersonaggio(
+            @PathParam("id")UUID id
+    ){
+        return SimpleResultDTO.<UUID>builder()
+                .payload(personaggioService.deletePersonaggio(id))
+                .message("Cancellato con successo.")
+                .build();
     }
 
 

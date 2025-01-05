@@ -18,13 +18,9 @@ public class SpellPersonaggioDTO extends  BasicSpellDTO {
 
     public static SpellPersonaggioDTO of(SpellBook spellbook) {
         SpellPersonaggioDTO dto = new SpellPersonaggioDTO();
-        if(spellbook.getResourceCost() != null)
-            dto.setResourceCost(spellbook.getResourceCost());
-
-        dto.setIndex(spellbook.getIndex());
-        dto.setName(spellbook.getName());
+        dto.setResourceCost(spellbook.getResourceCost());
+        dto.setName(spellbook.getSpellName());
         dto.setLevel(spellbook.getLevel());
-        dto.setUrl(spellbook.getUrl());
 
         return dto;
     }

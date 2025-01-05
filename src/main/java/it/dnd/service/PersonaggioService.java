@@ -62,19 +62,34 @@ public class PersonaggioService {
 
     public PagedResultDTO<DettaglioPersonaggioDTO> findPersonaggi(BaseSearch request){
         ExpressionList<Personaggio> query = db.find(Personaggio.class).where();
+        if (request.getSort() == null) {
+          query.orderBy("name ASC, id ASC");
+        }
         PagedList<Personaggio> personaggi = request.paginationOrderAndSort(query).findPagedList();
         return PagedResultDTO.of(personaggi, p -> DettaglioPersonaggioDTO.of(p, createSpellTableByClass(p.getClassi())));
     }
 
     public DettaglioPersonaggioDTO getPersonaggioById (UUID id){
         Personaggio pg = getPersonaggioByidOrThrow(id);
-        return DettaglioPersonaggioDTO.of(pg,createSpellTableByClass(pg.getClassi()));
 
+        return DettaglioPersonaggioDTO.of(pg,createSpellTableByClass(pg.getClassi()));
+    }
+
+    public UUID deletePersonaggio(UUID id){
+        Personaggio pg = getPersonaggioByidOrThrow(id);
+        try (Transaction tx = db.beginTransaction()) {
+            pg.delete(tx);
+            tx.commit();;
+            return pg.getId();
+        } catch (Exception e) {
+            throw new ServiceException(e);
+        }
     }
 
 
-    private Personaggio getPersonaggioByidOrThrow(UUID id){
-        return db.find(Personaggio.class).where()
+    public Personaggio getPersonaggioByidOrThrow(UUID id){
+        return db.find(Personaggio.class)
+                .where()
                 .idEq(id)
                 .findOneOrEmpty()
                 .orElseThrow(() -> new ServiceException("Personaggio avente l'id : "+ id + " non esiste."));

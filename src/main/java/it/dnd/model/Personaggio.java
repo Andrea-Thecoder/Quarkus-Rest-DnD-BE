@@ -34,14 +34,14 @@ public class Personaggio extends  AbstractAuditable{
 
     private Double gold;
 
-    @OneToMany(mappedBy = "personaggio")
+    @OneToMany(mappedBy = "personaggio",orphanRemoval = true)
     private Set<PersonaggioClasse> classi;
 
-    @OneToMany(mappedBy = "personaggio")
+    @OneToMany(mappedBy = "personaggio",orphanRemoval = true)
     private List<PersonaggioEquipaggiamento> equipaggiamento;
 
-    @OneToMany(mappedBy = "personaggio")
-    private List<PersonaggioSpellBook> spellBook;
+    @OneToMany(mappedBy = "personaggio",orphanRemoval = true)
+    private List<SpellBook> spellBook;
 
 
 }

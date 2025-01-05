@@ -11,6 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -59,9 +60,12 @@ public class DettaglioPersonaggioDTO {
                 .map(peq -> DettaglioEquipaggiamentoDTO.of((peq.getEquipaggiamento())))
                 .toList();
     }
-    private static List<SpellPersonaggioDTO> ExtractSpell (List<PersonaggioSpellBook> ps){
+    private static List<SpellPersonaggioDTO> ExtractSpell (List<SpellBook> ps){
         return ps.stream()
-                .map(pes -> SpellPersonaggioDTO.of(pes.getSpellBook()))
+                .sorted(Comparator.comparingInt(SpellBook::getLevel)
+                        .thenComparing(SpellBook::getSpellName)
+                )
+                .map(SpellPersonaggioDTO::of)
                 .toList();
     }
 }

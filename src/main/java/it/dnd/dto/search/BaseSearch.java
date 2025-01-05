@@ -25,9 +25,6 @@ public class BaseSearch {
     @QueryParam("sort")
     protected String sort;
 
-    @QueryParam("descending")
-    protected boolean descending;
-
     public <T> ExpressionList<T> paginationOrderAndSort(ExpressionList<T> query) {
         int rows = this.getSize();
         int offset = (this.getPage() - 1) * rows;

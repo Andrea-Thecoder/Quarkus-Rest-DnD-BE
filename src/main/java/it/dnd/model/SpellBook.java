@@ -1,6 +1,8 @@
 package it.dnd.model;
 
 
+import io.ebean.annotation.DbForeignKey;
+import io.ebean.annotation.Index;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,17 +17,20 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "spell_book")
+@Index(columnNames = {"personaggio_id","spell_name"},unique = true)
 public class SpellBook extends  AbstractAuditable {
 
     @Id
-    @Column(nullable = false)
-    private String name;
+    @GeneratedValue
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "personaggio_id", nullable = false)
+    @DbForeignKey(onDelete = io.ebean.annotation.ConstraintMode.CASCADE)
+    private Personaggio personaggio;
 
     @Column(nullable = false)
-    private String index;
-
-    @Column(nullable = false)
-    private String url;
+    private String spellName;
 
     @Column(nullable = false)
     private int level;
