@@ -16,8 +16,9 @@ public interface DndRestSpell {
     @Produces(MediaType.APPLICATION_JSON)
    SpellResponseDTO<BasicSpellDTO> getSpells();
 
+    //L'api in questione ricerca by index, ovvero nome completo della spell, col trattino invece di eventuali spazi e tutto in minuscolo. FormatString utils ha un method per convertire  il nome della spell nel formato accettato dalla rest.
     @GET
-    @Path("/{index}")
+    @Path("/{spellName}")
     @Produces(MediaType.APPLICATION_JSON)
-    DettaglioSpellResponseDTO getSpellsByName(@PathParam("index")String index);
+    DettaglioSpellResponseDTO getSpellsByName(@PathParam("spellName")String spellName);
 }

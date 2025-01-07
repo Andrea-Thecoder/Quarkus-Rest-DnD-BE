@@ -41,6 +41,7 @@ public class Equipaggiamento extends  AbstractAuditable{
 
      @Column(columnDefinition = "TEXT")
      private String proprieties;
+     //valutare isnerimetno di un map S/O con varie tipologiche associate per facilitare l'inserimento.
 
     @Column(columnDefinition = "TEXT")
      private String description;

@@ -92,20 +92,6 @@ public class SpellBookResource {
         spellBookService.removeSpellFromPersonaggio(spellName,idPg);
         return SimpleResultDTO.<Void>builder().message("Spell rimossa dal personaggio con successo.").build();
     }
-
-   /* @DELETE
-    @Path("/{spellName}")
-    @Operation(
-            summary = "Cancella le informazioni di base l'incantesimo dal DB",
-            description = "Permette la cancellazione delle informazioni di base dell'incantesimo dal DB. Esso ha successo solo quando nessun personaggio ha associato l'incantesimo che si vuole cancellare."
-    )
-        public SimpleResultDTO<Void> deleteSpell(
-            @PathParam("spellName") String  spellName
-            ){
-        log.info("SpellbookResource - DeleteSpell");
-        spellBookService.deleteSpell(spellName);
-        return SimpleResultDTO.<Void>builder().message("Spell eliminata con successo.").build();
-        }*/
-
+    
 
 }

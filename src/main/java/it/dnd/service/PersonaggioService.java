@@ -63,7 +63,7 @@ public class PersonaggioService {
     public PagedResultDTO<DettaglioPersonaggioDTO> findPersonaggi(BaseSearch request){
         ExpressionList<Personaggio> query = db.find(Personaggio.class).where();
         if (request.getSort() == null) {
-          query.orderBy("name ASC, id ASC");
+          request.setSort("name ASC, id ASC");
         }
         PagedList<Personaggio> personaggi = request.paginationOrderAndSort(query).findPagedList();
         return PagedResultDTO.of(personaggi, p -> DettaglioPersonaggioDTO.of(p, createSpellTableByClass(p.getClassi())));

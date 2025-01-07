@@ -29,13 +29,4 @@ public class PagedResultDTO<T> {
         return pr;
     }
 
-    /*public static <T, R> QueryBean<T, R> setSort(QueryBean<T, R> query, BaseSearchRequest req) {
-        if (StringUtils.isNotBlank(req.getSort())) {
-            String field = req.getSort().trim();
-            if (req.isDescending())
-                field += " desc";
-            query.orderBy(field);
-        }
-        return query;
-    }*/
 }
