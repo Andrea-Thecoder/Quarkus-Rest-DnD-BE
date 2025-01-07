@@ -6,27 +6,26 @@ import it.dnd.dto.SimplyInsertTypeDTO;
 import it.dnd.dto.search.BaseSearch;
 import it.dnd.exception.ServiceException;
 import it.dnd.model.TipoClasse;
+import it.dnd.model.TipoEquipaggiamento;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.NotFoundException;
 
-import java.security.Provider;
-
 @ApplicationScoped
-public class TipoClasseServices {
+public class TipoEquipaggiamentoService {
 
     @Inject
     Database db;
 
-    public PagedResultDTO<TipoClasse>  findClassi (BaseSearch request){
-        ExpressionList<TipoClasse> query = db.find(TipoClasse.class).where();
-        PagedList<TipoClasse> tipoClasseList = request.paginationOrderAndSort(query).findPagedList();
-        return PagedResultDTO.of(tipoClasseList, a->a);
+    public PagedResultDTO<TipoEquipaggiamento> findTipoEquip (BaseSearch request){
+        ExpressionList<TipoEquipaggiamento> query = db.find(TipoEquipaggiamento.class).where();
+        PagedList<TipoEquipaggiamento> tipoEquipList = request.paginationOrderAndSort(query).findPagedList();
+        return PagedResultDTO.of(tipoEquipList, a->a);
     }
 
-    public TipoClasse createTipoClasse (SimplyInsertTypeDTO dto){
+    public TipoEquipaggiamento createTipoEquip (SimplyInsertTypeDTO dto){
         try (Transaction tx = db.beginTransaction()) {
-            TipoClasse tc = new TipoClasse();
+            TipoEquipaggiamento tc = new TipoEquipaggiamento();
             tc.setDescription(dto.getDescription());
             tc.insert(tx);
             tx.commit();
@@ -36,9 +35,9 @@ public class TipoClasseServices {
         }
     }
 
-    public void updateTipoClasse (Long id, SimplyInsertTypeDTO dto){
+    public void updateTipoEquip (Long id, SimplyInsertTypeDTO dto){
         try (Transaction tx = db.beginTransaction()) {
-            TipoClasse tc = getTipoClasseById(id);
+            TipoEquipaggiamento tc = getTipoEquipById(id);
             tc.setDescription(dto.getDescription());
             tc.save(tx);
             tx.commit();
@@ -51,9 +50,9 @@ public class TipoClasseServices {
         }
     }
 
-    public Long deleteTipoClasse (Long id){
+    public Long deleteTipoEquip (Long id){
         try (Transaction tx = db.beginTransaction()) {
-            TipoClasse tc = getTipoClasseById(id);
+            TipoEquipaggiamento tc = getTipoEquipById(id);
             tc.delete(tx);
             tx.commit();
             return tc.getId();
@@ -64,11 +63,10 @@ public class TipoClasseServices {
     }
 
 
-    public TipoClasse getTipoClasseById(Long id){
-        return db.find(TipoClasse.class).where()
+    public TipoEquipaggiamento getTipoEquipById(Long id){
+        return db.find(TipoEquipaggiamento.class).where()
                 .idEq(id)
                 .findOneOrEmpty()
-                .orElseThrow(() -> new NotFoundException("Tipo classe avente id "+id + " non esiste." ));
+                .orElseThrow(() -> new NotFoundException("Tipo Equipaggiamento avente id "+id + " non esiste." ));
     }
-
 }

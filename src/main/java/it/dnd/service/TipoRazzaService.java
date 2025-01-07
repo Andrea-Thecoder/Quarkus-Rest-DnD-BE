@@ -7,9 +7,11 @@ import it.dnd.dto.search.BaseSearch;
 import it.dnd.exception.ServiceException;
 import it.dnd.model.TipoClasse;
 import it.dnd.model.TipoRazza;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.NotFoundException;
 
+@ApplicationScoped
 public class TipoRazzaService {
 
     @Inject

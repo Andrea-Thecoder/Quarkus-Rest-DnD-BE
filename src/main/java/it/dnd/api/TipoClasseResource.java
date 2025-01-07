@@ -20,7 +20,7 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import java.util.UUID;
 
 @Tag(name = "API Tipo Classe")
-@Path("Personaggio")
+@Path("tipo-classe")
 @Slf4j
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
@@ -43,8 +43,8 @@ public class TipoClasseResource {
 
     @GET
     @Operation(
-            summary = "Recupera una lista con tutte le classi.",
-            description = "Permette il recupero di tutti le classi inseriti nel DB. Restituisce una lista paginata ed accetta queryparams di ricerca"
+            summary = "Recupera una lista con tutti i tipi di classe.",
+            description = "Permette il recupero di tutti i tipi di classe inseriti nel DB. Restituisce una lista paginata ed accetta queryparams di ricerca"
     )
     public PagedResultDTO<TipoClasse> findTipoClassi(
             @BeanParam BaseSearch request){
@@ -57,21 +57,25 @@ public class TipoClasseResource {
             summary = "Permette la modifa di una Classe esistente",
             description = "Permette la modifica di una Classe esistente nel DB, tramite il suo Id."
     )
-    public SimpleResultDTO<Void> updateClasse(
+    public SimpleResultDTO<Void> updateTipoClasse(
             @PathParam("id") Long id,
             @Valid SimplyInsertTypeDTO dto
     ){
-        log.info("TipoClasseResource - updateClasse");
+        log.info("TipoClasseResource - updateTipoClasse");
         tipoClasseServices.updateTipoClasse(id,dto);
         return SimpleResultDTO.<Void>builder().message("Tipo Classe aggiornato con successo.").build();
     }
 
     @DELETE
     @Path("/{id}")
-    public SimpleResultDTO<Long> deletePersonaggio(
+    @Operation(
+            summary = "Permette la cancellazione di un tipo di classe",
+            description = "Permette la cancellazione dal DB di un tipo di classe"
+    )
+    public SimpleResultDTO<Long> deleteTipoClasse(
             @PathParam("id")Long id
     ){
-        log.info("TipoClasseResource - deletePersonaggio");
+        log.info("TipoClasseResource - deleteTipoClasse");
         return SimpleResultDTO.<Long>builder()
                 .payload(tipoClasseServices.deleteTipoClasse(id))
                 .message("Classe cancellata con successo.")

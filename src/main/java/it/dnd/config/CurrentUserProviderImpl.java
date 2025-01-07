@@ -14,7 +14,6 @@ public class CurrentUserProviderImpl implements CurrentUserProvider {
     }
 
     public String getCurrentUser() {
-        //TODO logica reale quando avremo l'utenza in sessione
 //        if (jwt != null && StringUtils.isNotBlank(jwt.getSubject()))
 //            return jwt.getSubject();
         return "system01";

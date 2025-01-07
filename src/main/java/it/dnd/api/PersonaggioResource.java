@@ -67,6 +67,10 @@ public class PersonaggioResource {
 
     @DELETE
     @Path("/{id}")
+    @Operation(
+            summary = "Permette la cancellazione di un Personaggio",
+            description = "Permette la cancellazione dal DB di un personaggio tramitei l suo id. Quest'operazione cancellerà anche tutte le voci a lui connesse (equipaggiamento, spell etc)"
+    )
     public SimpleResultDTO<UUID> deletePersonaggio(
             @PathParam("id")UUID id
     ){

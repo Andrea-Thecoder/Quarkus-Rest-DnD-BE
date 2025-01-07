@@ -1,5 +1,7 @@
 package it.dnd.api;
 
+import it.dnd.client.DndRestRazze;
+import it.dnd.dto.DettaglioRazzaDTO;
 import it.dnd.dto.PagedResultDTO;
 import it.dnd.dto.SimpleResultDTO;
 import it.dnd.dto.SimplyInsertTypeDTO;
@@ -11,13 +13,15 @@ import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 
 @Tag(name = "API Tipo Razza")
-@Path("Personaggio")
+@Path("tipo-razza")
 @Slf4j
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
@@ -65,6 +69,10 @@ public class TipoRazzaResource {
 
     @DELETE
     @Path("/{id}")
+    @Operation(
+            summary = "Permette la cancellazione di un tipo di razza",
+            description = "Permette la cancellazione dal DB di un tipo di razza"
+    )
     public SimpleResultDTO<Long> deleteTipoRazza(
             @PathParam("id")Long id
     ){
@@ -74,5 +82,4 @@ public class TipoRazzaResource {
                 .message("Razza cancellata con successo.")
                 .build();
     }
-
 }

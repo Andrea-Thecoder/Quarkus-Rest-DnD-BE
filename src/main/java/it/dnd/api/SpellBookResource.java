@@ -82,7 +82,6 @@ public class SpellBookResource {
     @Operation(
             summary = "Cancella l'associazione tra l'incantesimo ed il personaggio",
             description ="Permette la cancellazione, a DB, dell'associazione tra il personaggio e l'incantesimo. Elimina anche i dati  dell'incantesimo dal DB se non ci sono altre associazioni per quell'incantesimo. "
-
     )
     public SimpleResultDTO<Void> removeSpellFromPersonaggio(
             @PathParam("spellName") String  spellName,

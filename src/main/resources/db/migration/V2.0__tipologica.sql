@@ -11,8 +11,7 @@ VALUES
     ('Paladino'),
     ('Ranger'),
     ('Stregone'),
-    ('Warlock'),
-    ('Wizard');
+    ('Warlock');
 
     INSERT INTO tipo_razza (description)
     VALUES

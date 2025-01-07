@@ -6,6 +6,7 @@ import it.dnd.dto.spell.SpellResponseDTO;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
+import org.jboss.resteasy.reactive.RestPath;
 
 
 @Path("/spells")
@@ -20,5 +21,5 @@ public interface DndRestSpell {
     @GET
     @Path("/{spellName}")
     @Produces(MediaType.APPLICATION_JSON)
-    DettaglioSpellResponseDTO getSpellsByName(@PathParam("spellName")String spellName);
+    DettaglioSpellResponseDTO getSpellsByName(@RestPath("spellName")String spellName);
 }
